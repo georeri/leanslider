@@ -1,0 +1,16 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:leanslider.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Slider {
+  SLIDER_ID            Int     @default(autoincrement()) @id
+  SLIDER_VALUE Int @default(0)
+  START_TIMEe Int @default(0)
+  END_TIME Int @default(0)
+  @@map(name: "SLIDER")
+}
