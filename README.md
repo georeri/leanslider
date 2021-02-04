@@ -1,6 +1,12 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
+Install dependencies
+npm install
+# then initialize the prisma orm
+npm add -D @prisma/cli
+npm add -D @prisma
+npx prisma generate --schema ./db/schema.prisma
 
 First, run the development server:
 

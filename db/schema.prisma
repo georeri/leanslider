@@ -10,7 +10,7 @@ generator client {
 model Slider {
   SLIDER_ID            Int     @default(autoincrement()) @id
   SLIDER_VALUE Int @default(0)
-  START_TIMEe Int @default(0)
+  START_TIME Int @default(0)
   END_TIME Int @default(0)
   @@map(name: "SLIDER")
 }
