@@ -4,6 +4,11 @@ var http = require('http').createServer(app);
 const PORT = 3000;
 var io = require('socket.io')(http);
 const next = require('next')
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+
 
 
 const dev = process.env.NODE_ENV !== 'production'
@@ -22,13 +27,7 @@ const nextHandler = nextApp.getRequestHandler()
 //     sockets: []
 // }];
 
-var sliderState = [{
-    slider1: 0,
-    slider2: 0,
-    slider3: 0,
-    slider4: 0,
-    slider5: 0
-}];
+var sliderState = [];
 
 
 
@@ -96,16 +95,13 @@ io.on('connection', (socket) => { // socket object may be used to send specific 
 
 
 app.put('/publish', (req, res) => {
-        console.log("PUBLISH CHANGE")
-     //const sliderId = req.body.id;
-       
-     //  const sliderVal = req.body.values[0];
+        console.log("PUBLISH CHANGE");
+        console.log(req.body);
+     const sliderId = req.body.slider.id;
+    const sliderVal = req.body.slider.values[0];
 
-     const sliderId = 1;
-     const sliderVal = 50;
-
-       this.slider1 = sliderVal;
+       //this.slider1 = sliderVal;
        res.status(200).json({id: sliderId, value: sliderVal});
-       io.emit('valchange', sliderVal);
+       io.emit('valchange', {sliderId: sliderId ,sliderVal: sliderVal});
      
 });

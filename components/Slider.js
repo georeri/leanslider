@@ -11,7 +11,7 @@ const SERVER = "http://localhost:3000";
 export default class Slider extends React.Component{
   
   state = {
-      id:[-1],
+      id:-1,
       values: [0],
       color: ["#FF0000"],
       flipped: false,
@@ -23,7 +23,7 @@ export default class Slider extends React.Component{
     super(props);
       if(props.sliderVal != undefined) {
         this.state.values = [props.sliderVal];
-        this.state.id = [props.id];
+        this.state.id = props.id;
        
       }
   }
@@ -42,9 +42,12 @@ export default class Slider extends React.Component{
   
     });
 
-    socket.on('valchange', value => {
+    socket.on('valchange', data => {
       console.log('VALUECHANGE');
-      this.setState({values: [value]});
+      console.log(data);
+      console.log("MYID: " + this.state.id);
+      if(data.sliderId === this.state.id)
+        this.setState({values: [data.sliderVal]});
     });
     this.socket = socket;
 }
@@ -58,7 +61,7 @@ export default class Slider extends React.Component{
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(e.state)
+      body: JSON.stringify({slider: e.state})
     });
     
   }
