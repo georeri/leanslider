@@ -7,14 +7,31 @@ const MIN = 0;
 const MAX = 100;
 
 export default class Slider extends React.Component{
+  
+  state = {
+      id:[-1],
+      values: [0],
+      color: ["#FF0000"],
+      flipped: false,
+    };       
 
   constructor(props) {
-    super();
+    super(props);
       if(props.sliderVal != undefined) {
         this.state.values = [props.sliderVal];
         this.state.id = [props.id];
+       
       }
   }
+
+  componentDidMount(){
+    if(this.state.values[0] === MAX)
+    {
+      this.setState({color: "#008080", flipped: true});
+    }
+  }
+
+  
 
   static async publishSliderUpdates(e) {
     
@@ -31,12 +48,6 @@ export default class Slider extends React.Component{
 
 
 
-    state = {
-        id:[-1],
-        values: [0],
-        color: ["#FF0000"],
-        flipped: false,
-      };       
       
       
 render() {
@@ -49,16 +60,19 @@ render() {
             min={MIN}
             max={MAX}
             onChange={(values) => {
-                if(values == MAX && this.state.flipped == false){
+                if(values[0] == MAX ){
                     this.setState({values: values, color: "#008080", flipped: true});
                     Slider.publishSliderUpdates(this);
                 }
-                else if(values == MIN && this.state.flipped == true){
+                else if(values[0] == MIN){
                     this.setState({values: values, color: "#FF0000", flipped:false});
                     Slider.publishSliderUpdates(this);
                 }
                 else
+                {
                     this.setState({values: values});
+                    //Slider.publishSliderUpdates(this);
+                }
                 
             }}        
             renderTrack={({ props, children }) => (
