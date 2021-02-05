@@ -1,10 +1,12 @@
 import {Range, getTrackBackground} from 'react-range';
 import * as React from 'react';
 import { useRouter } from 'next/router'
+import socketClient from 'socket.io-client';
 
 const STEP = 1;
 const MIN = 0;
 const MAX = 100;
+const SERVER = "http://localhost:3000";
 
 export default class Slider extends React.Component{
   
@@ -13,7 +15,9 @@ export default class Slider extends React.Component{
       values: [0],
       color: ["#FF0000"],
       flipped: false,
-    };       
+      socket: null,
+    };     
+  socket;  
 
   constructor(props) {
     super(props);
@@ -29,13 +33,26 @@ export default class Slider extends React.Component{
     {
       this.setState({color: "#008080", flipped: true});
     }
+    this.configureSocket();
   }
+
+  configureSocket = () => {
+    var socket = socketClient(SERVER);
+    socket.on('connection', () => {
+  
+    });
+
+    socket.on('valchange', value => {
+      console.log('VALUECHANGE');
+      this.setState({values: [value]});
+    });
+    this.socket = socket;
+}
 
   
 
   static async publishSliderUpdates(e) {
-    
-    const res = await fetch(`http://localhost:3000/api/publish/${e.state.id}`, {
+    const res = await fetch(`http://localhost:3000/publish/`, {
       method: "PUT",
       headers: {
         'Accept': 'application/json',
