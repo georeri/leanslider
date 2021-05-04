@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import Slider from '../components/Slider'
 import styles from '../styles/home.module.css'
-import prisma from '../db/prisma'
+import prisma from '../prisma/prisma'
 
 
 export const getStaticProps = async ({ req }) => {
